@@ -1,22 +1,17 @@
-
+from pages.base_page import BasePage
 from selenium.webdriver.common.by import By
+from locators import order_page_locators
 
 
-class OrderPage:
+class OrderPage(BasePage):
 
     def __init__(self, driver):
-        self.driver = driver
+        super().__init__(driver)
 
     def fill_field(self,field,filler):
         self.driver.find_element(*field).send_keys(filler)
 
-    def click_button(self,button):
-        self.driver.find_element(*button).click()
-
-    def get_url(self):
-        return self.driver.current_url
-
     def check_order_success(self):
-        return 'Заказ оформлен' in self.driver.find_element(By.CSS_SELECTOR,'.Order_ModalHeader__3FDaJ').text
+        return 'Заказ оформлен' in self.driver.find_element(*order_page_locators.OrderPageElements.order_success_header).text
 
 
