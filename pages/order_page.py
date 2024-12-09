@@ -5,8 +5,6 @@ from locators import order_page_locators
 
 class OrderPage(BasePage):
 
-    def __init__(self, driver):
-        super().__init__(driver)
 
     def fill_field(self,field,filler):
         self.driver.find_element(*field).send_keys(filler)

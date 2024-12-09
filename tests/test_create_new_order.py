@@ -1,5 +1,8 @@
 from selenium import webdriver
+
+import test_url
 from pages.main_page import MainPage
+from locators import base_page_locators
 from locators import main_page_locators
 from locators import order_page_locators
 from pages.order_page import OrderPage
@@ -18,9 +21,9 @@ class TestOrderCreate:
 
     @pytest.mark.parametrize('name,surname,address,phone,date', [test_data.data_1,test_data.data_2])
     def test_new_order_top_button(self,name,surname,address,phone,date):
-        self.driver.get('https://qa-scooter.praktikum-services.ru/')
+        self.driver.get(test_url.main_page_url)
         main_page = MainPage(self.driver)
-        main_page.click_button(main_page_locators.MainPageElements.top_order_button)
+        main_page.click_button(base_page_locators.BasePageElements.top_order_button)
         order_page=OrderPage(self.driver)
         order_page.fill_field(order_page_locators.OrderPageElements.name_field,name)
         order_page.fill_field(order_page_locators.OrderPageElements.surname_field,surname)
@@ -38,10 +41,10 @@ class TestOrderCreate:
         assert order_page.check_order_success()
 
     def test_new_order_bottom_button(self):
-        self.driver.get('https://qa-scooter.praktikum-services.ru/')
+        self.driver.get(test_url.main_page_url)
         main_page = MainPage(self.driver)
-        main_page.scroll_to(main_page_locators.MainPageElements.bottom_order_button)
-        main_page.click_button(main_page_locators.MainPageElements.bottom_order_button)
+        main_page.scroll_to(base_page_locators.BasePageElements.bottom_order_button)
+        main_page.click_button(base_page_locators.BasePageElements.bottom_order_button)
         order_page=OrderPage(self.driver)
         order_page.fill_field(order_page_locators.OrderPageElements.name_field,test_data.name)
         order_page.fill_field(order_page_locators.OrderPageElements.surname_field,test_data.surname)
@@ -59,16 +62,16 @@ class TestOrderCreate:
         assert order_page.check_order_success()
 
     def test_logo_yandex_redirect(self):
-        self.driver.get('https://qa-scooter.praktikum-services.ru/')
+        self.driver.get(test_url.main_page_url)
         main_page = MainPage(self.driver)
-        main_page.click_button(main_page_locators.MainPageElements.logo_yandex)
+        main_page.click_button(base_page_locators.BasePageElements.logo_yandex)
         time.sleep(3)
         self.driver.switch_to.window(self.driver.window_handles[-1])
-        assert main_page.get_url() == 'https://dzen.ru/?yredirect=true'
+        assert main_page.get_url() == test_url.dzen_main_url
 
     def test_logo_scooter_redirect(self):
-        self.driver.get('https://qa-scooter.praktikum-services.ru/')
+        self.driver.get(test_url.main_page_url)
         main_page = MainPage(self.driver)
-        main_page.click_button(main_page_locators.MainPageElements.top_order_button)
+        main_page.click_button(base_page_locators.BasePageElements.top_order_button)
         main_page.click_button(order_page_locators.OrderPageElements.logo_scooter)
-        assert main_page.get_url() == 'https://qa-scooter.praktikum-services.ru/'
+        assert main_page.get_url() == test_url.main_page_url
